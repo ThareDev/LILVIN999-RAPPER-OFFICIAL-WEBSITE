@@ -281,7 +281,7 @@ export default function Hero(): JSX.Element {
                 transform: "rotate(-1.5deg)",
               }}
             >
-              "BORN TO MUSIC"
+               &ldquo;BORN TO MUSIC&rdquo;
             </motion.p>
 
             <motion.p

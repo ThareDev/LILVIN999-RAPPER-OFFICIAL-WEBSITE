@@ -137,8 +137,8 @@ export default function About() {
                   transform: "rotate(-1deg)",
                 }}
               >
-                "The block raised me,{" "}
-                <span style={{ color: "#6B7C73" }}>the booth saved me."</span>
+                &ldquo;The block raised me,{" "}
+                <span style={{ color: "#6B7C73" }}>the booth saved me.&rdquo;</span>
               </blockquote>
             </div>
 
@@ -222,7 +222,8 @@ export default function About() {
               </p>
               <p>
                 <span style={{ color: "#6B7C73" }}>Trust nobody. Fear none.</span>{" "}
-                Every track is proof of where he's been and a warning of where he's headed.
+                Every track is proof of where he&apos;s been and a warning of where he&apos;s headed.
+
               </p>
             </div>
 
