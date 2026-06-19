@@ -1,5 +1,5 @@
 "use client";
-import { useState, useRef, useEffect } from "react";
+import { useState, useRef } from "react";
 import Image from "next/image";
 import album1 from "@/public/hhh.jpg";
 import album2 from "@/public/jjjj.jpg";
@@ -113,7 +113,7 @@ export default function Music() {
     ensureYTApi(() => {
       if (!window.YT) return;
       // ensure div exists
-      let div = document.getElementById(playerDivId);
+      const div = document.getElementById(playerDivId);
       if (!div) return;
 
       playerRef.current = new window.YT.Player(playerDivId, {
