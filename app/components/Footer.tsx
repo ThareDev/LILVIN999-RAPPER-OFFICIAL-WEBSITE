@@ -7,11 +7,12 @@ export default function Footer() {
   const [popupOpen, setPopupOpen] = useState(false);
 
   const socials = [
-    { name: "Instagram", handle: "@lilvin999", url: "https://www.instagram.com/lilvin999" },
-    { name: "Spotify", handle: "LILVIN999", url: "https://open.spotify.com/artist/lilvin999" },
-    { name: "YouTube", handle: "LILVIN999TV", url: "https://youtube.com/@lilvin999" },
-    { name: "TikTok", handle: "@lilvin999", url: "https://www.tiktok.com/@lilvin999" },
-    { name: "Facebook", handle: "@lilvin999", url: "https://www.facebook.com/lilvin999" },
+    { name: "Instagram", handle: "@lilvin999", url: "https://www.instagram.com/lilvin999?igsh=MXdwanV0dXJzeGhxaw==" },
+    { name: "Spotify", handle: "LILVIN999", url: "https://open.spotify.com/artist/00FwwxGQZgbBpM5fwJm4Zy?si=b922hjQQQ5OzgXOJsPcuVg" },
+    { name: "YouTube", handle: "LILVIN999TV", url: "https://youtube.com/@lilvin999?si=32SOeudo-8ttI309" },
+    { name: "TikTok", handle: "@lilvin999_", url: "https://www.tiktok.com/@lilvin999_?_r=1&_t=ZS-97LkIOcbJr" },
+    { name: "Facebook", handle: "Profile", url: "https://www.facebook.com/share/1DCpU3XGmV/" },
+    { name: "Facebook Page", handle: "Official Page", url: "https://www.facebook.com/share/1H9L5suiP1/" },
   ];
 
   return (
@@ -217,7 +218,7 @@ export default function Footer() {
               letterSpacing: "0.18em", textTransform: "uppercase",
               color: "rgba(0,163,255,0.25)",
             }}>
-              Developed by Tharaka Nuwan Athuluwage
+              Developed by Ravana Tec Solutions PVT Ltd.
             </p>
           </div>
         </div>

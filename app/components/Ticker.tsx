@@ -1,19 +1,10 @@
 export default function Ticker() {
   const items = [
-    "Na Hook (feat. Costa & Marley)",
-    "Kachal Kasi (feat. Smokio)",
-    "Bashawa",
-    "ගෑනු නැකත (Gaanu Nakatha)",
-    "තේරෙයි කල් යයි (Theruyi Kal Yayi) (feat. Lil Rome Asha)",
-    "Paramanu (පරමාණු)",
-    "මදේ හිස් ඩිස් (Made His Dis)",
-    "Visakuru Charitha (feat. S.H.A.G.I & Safa)",
-    "දේවත්වෙන් (Dewathwen)",
-    "Fake Chandi",
-    "Mama Mama Maai",
-    "දහම (Dahama)",
-    "Yakkunge Vimane",
-    "Ahasa Gugura",
+    "CLOSE — Lilvin999 x Clessoff (Remix)",
+    "PORO PAARA — Lilvin999",
+    "ALUGOZU — Lilvin999 ft. Zana Beatz",
+    "LEAN — Lilvin999",
+    "MONARU — Lilvin999",
   ];
 
   const repeated = [...items, ...items];

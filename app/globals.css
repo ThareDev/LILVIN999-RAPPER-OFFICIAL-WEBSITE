@@ -47,7 +47,7 @@ body::before {
 
 .section-divider {
   height: 1px;
-  background: linear-gradient(90deg, transparent, #8B0000 30%, #DC143C 50%, #8B0000 70%, transparent);
+  background: linear-gradient(90deg, transparent, rgba(57,255,20,0.3) 30%, #39FF14 50%, rgba(57,255,20,0.3) 70%, transparent);
 }
 
 .scanlines::after {
