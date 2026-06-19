@@ -6,59 +6,84 @@ export default function About() {
     <section
       id="about"
       className="relative overflow-hidden py-24 lg:py-32"
-      style={{ background: "#0F1F16" }}
+      style={{ background: "#080F14" }}
     >
       <style>{`
         @import url('https://fonts.googleapis.com/css2?family=Anton&family=Oswald:wght@400;500;700&family=Permanent+Marker&display=swap');
 
+        /* faded watermark behind section */
         .about-stroke {
           color: transparent;
-          -webkit-text-stroke: 1.5px rgba(107,124,115,0.18);
+          -webkit-text-stroke: 1.5px rgba(57,255,20,0.06);
         }
+
+        /* genre tags */
         .about-tag {
           font-family: 'Oswald', sans-serif;
           font-size: 11px;
-          letter-spacing: 0.2em;
+          letter-spacing: 0.18em;
           text-transform: uppercase;
-          color: #6B7C73;
-          border: 1px solid rgba(107,124,115,0.25);
+          color: rgba(57,255,20,0.7);
+          border: 1px solid rgba(57,255,20,0.2);
           padding: 6px 14px;
           transition: border-color 0.25s, color 0.25s, background 0.25s;
           cursor: default;
         }
         .about-tag:hover {
-          border-color: #2E4A3D;
-          color: #fff;
-          background: rgba(46,74,61,0.2);
+          border-color: #39FF14;
+          color: #39FF14;
+          background: rgba(57,255,20,0.06);
+          box-shadow: 0 0 12px rgba(57,255,20,0.12);
         }
+
+        /* primary CTA */
         .about-btn-solid {
           font-family: 'Oswald', sans-serif;
-          font-weight: 600;
+          font-weight: 700;
           font-size: 12px;
           letter-spacing: 0.16em;
           text-transform: uppercase;
-          color: #070C0A;
-          background: #6B7C73;
+          color: #080F14;
+          background: #39FF14;
           padding: 13px 30px;
-          transition: background 0.25s, transform 0.25s;
+          border: none;
+          cursor: pointer;
+          transition: background 0.25s, box-shadow 0.25s, transform 0.25s;
+          box-shadow: 0 0 18px rgba(57,255,20,0.3);
+          text-decoration: none;
+          display: inline-block;
         }
-        .about-btn-solid:hover { background: #fff; transform: translateY(-2px); }
+        .about-btn-solid:hover {
+          background: #fff;
+          box-shadow: 0 0 24px rgba(57,255,20,0.2);
+          transform: translateY(-2px);
+        }
+
+        /* ghost CTA */
         .about-btn-ghost {
           font-family: 'Oswald', sans-serif;
-          font-weight: 600;
+          font-weight: 700;
           font-size: 12px;
           letter-spacing: 0.16em;
           text-transform: uppercase;
-          color: #6B7C73;
+          color: #00A3FF;
           background: transparent;
-          border: 1.5px solid #2E4A3D;
+          border: 1.5px solid #00A3FF;
           padding: 12px 30px;
-          transition: border-color 0.25s, color 0.25s, transform 0.25s;
+          cursor: pointer;
+          transition: border-color 0.25s, color 0.25s, box-shadow 0.25s, transform 0.25s;
+          text-decoration: none;
+          display: inline-block;
         }
-        .about-btn-ghost:hover { border-color: #6B7C73; color: #fff; transform: translateY(-2px); }
+        .about-btn-ghost:hover {
+          border-color: #00A3FF;
+          color: #fff;
+          box-shadow: 0 0 20px rgba(0,163,255,0.3);
+          transform: translateY(-2px);
+        }
       `}</style>
 
-      {/* large faded watermark word */}
+      {/* large faded watermark */}
       <div className="absolute left-0 top-0 overflow-hidden select-none pointer-events-none">
         <span
           className="about-stroke block"
@@ -73,19 +98,20 @@ export default function About() {
         </span>
       </div>
 
-      {/* dot grid accent */}
+      {/* dot grid accent top-right */}
       <div
         className="absolute right-0 top-0 w-72 h-72 pointer-events-none hidden lg:block"
         style={{
-          backgroundImage: "radial-gradient(rgba(61,86,102,0.3) 1px, transparent 1px)",
+          backgroundImage: "radial-gradient(rgba(0,163,255,0.2) 1px, transparent 1px)",
           backgroundSize: "16px 16px",
           maskImage: "radial-gradient(ellipse 70% 70% at 100% 0%, black 0%, transparent 100%)",
         }}
       />
 
-      <div className="relative max-w-7xl mx-auto px-6 lg:px-12">
-        <div className="grid grid-cols-1 lg:grid-cols-2 gap-16 lg:gap-24 items-center">
-          {/* ── image side ── */}
+      <div className="relative max-w-7xl mx-auto px-5 sm:px-8 lg:px-12">
+        <div className="grid grid-cols-1 lg:grid-cols-2 gap-14 lg:gap-24 items-center">
+
+          {/* ── IMAGE SIDE ── */}
           <div className="relative order-2 lg:order-1">
             <div
               className="relative aspect-[3/4] overflow-hidden"
@@ -96,64 +122,64 @@ export default function About() {
                 alt="LILVIN999"
                 fill
                 className="object-cover object-top"
-                style={{
-                  filter: "contrast(1.1) brightness(0.7) saturate(0.5) sepia(0.12) hue-rotate(60deg)",
-                }}
+                style={{ filter: "contrast(1.05) brightness(0.95) saturate(0.9)" }}
               />
+              {/* bottom gradient */}
               <div
                 className="absolute inset-0"
                 style={{
                   background:
-                    "linear-gradient(180deg, rgba(7,12,10,0.1) 0%, transparent 40%, rgba(7,12,10,0.85) 100%)",
+                    "linear-gradient(180deg, transparent 40%, rgba(8,15,20,0.9) 100%)",
                 }}
               />
+              {/* subtle electric blue glow */}
               <div
                 className="absolute inset-0"
                 style={{
                   background:
-                    "linear-gradient(100deg, rgba(15,31,22,0.3) 0%, transparent 50%)",
+                    "radial-gradient(ellipse 60% 50% at 50% 30%, rgba(0,163,255,0.08) 0%, transparent 70%)",
                 }}
               />
             </div>
 
             {/* frame accents */}
             <div
-              className="absolute -bottom-4 -right-4 w-3/4 h-3/4 -z-10"
-              style={{ border: "1px solid rgba(46,74,61,0.5)" }}
+              className="absolute -bottom-4 -right-4 w-3/4 h-3/4 -z-10 hidden sm:block"
+              style={{ border: "1px solid rgba(57,255,20,0.18)" }}
             />
             <div
-              className="absolute -top-4 -left-4 w-24 h-24"
-              style={{ borderTop: "1px solid #3D5666", borderLeft: "1px solid #3D5666" }}
+              className="absolute -top-4 -left-4 w-24 h-24 hidden sm:block"
+              style={{ borderTop: "1px solid #00A3FF", borderLeft: "1px solid #00A3FF" }}
             />
 
             {/* quote tag */}
-            <div className="absolute bottom-8 left-0 right-0 px-6">
+            <div className="absolute bottom-6 left-0 right-0 px-6">
               <blockquote
                 style={{
                   fontFamily: "'Permanent Marker', cursive",
-                  fontSize: "clamp(17px, 2.2vw, 23px)",
+                  fontSize: "clamp(15px, 2vw, 21px)",
                   color: "#fff",
                   lineHeight: 1.4,
                   transform: "rotate(-1deg)",
                 }}
               >
                 &ldquo;The block raised me,{" "}
-                <span style={{ color: "#6B7C73" }}>the booth saved me.&rdquo;</span>
+                <span style={{ color: "#39FF14" }}>the booth saved me.&rdquo;</span>
               </blockquote>
             </div>
 
-            {/* small advisory badge */}
+            {/* advisory badge */}
             <div
               className="absolute top-5 left-5 z-10"
               style={{
-                border: "1.5px solid #6B7C73",
+                border: "1.5px solid rgba(57,255,20,0.4)",
                 padding: "3px 7px",
                 fontFamily: "'Oswald', sans-serif",
                 fontSize: 8,
                 letterSpacing: "0.1em",
-                color: "#6B7C73",
+                color: "rgba(57,255,20,0.7)",
                 lineHeight: 1.2,
-                background: "rgba(7,12,10,0.6)",
+                background: "rgba(8,15,20,0.7)",
               }}
             >
               PARENTAL
@@ -162,17 +188,18 @@ export default function About() {
             </div>
           </div>
 
-          {/* ── text side ── */}
+          {/* ── TEXT SIDE ── */}
           <div className="order-1 lg:order-2">
+            {/* eyebrow */}
             <div className="flex items-center gap-3 mb-4">
-              <div style={{ width: 32, height: 1, background: "#2E4A3D" }} />
+              <div style={{ width: 32, height: 1, background: "#39FF14", opacity: 0.5 }} />
               <span
                 style={{
                   fontFamily: "'Oswald', sans-serif",
                   fontSize: 10,
                   letterSpacing: "0.3em",
                   textTransform: "uppercase",
-                  color: "#3D5666",
+                  color: "#00A3FF",
                 }}
               >
                 The Story
@@ -194,7 +221,8 @@ export default function About() {
               <span
                 style={{
                   color: "transparent",
-                  WebkitTextStroke: "1.5px #2E4A3D",
+                  WebkitTextStroke: "1.5px #39FF14",
+                  textShadow: "none",
                 }}
               >
                 LILVIN999
@@ -204,10 +232,10 @@ export default function About() {
             <div
               className="space-y-4"
               style={{
-                fontFamily: "'Barlow Condensed', 'Oswald', sans-serif",
-                fontSize: 17,
+                fontFamily: "'Oswald', sans-serif",
+                fontSize: 16,
                 lineHeight: 1.8,
-                color: "rgba(107,124,115,0.85)",
+                color: "rgba(255,255,255,0.5)",
               }}
             >
               <p>
@@ -221,9 +249,8 @@ export default function About() {
                 No gimmicks. No shortcuts. Just receipts.
               </p>
               <p>
-                <span style={{ color: "#6B7C73" }}>Trust nobody. Fear none.</span>{" "}
+                <span style={{ color: "#39FF14" }}>Trust nobody. Fear none.</span>{" "}
                 Every track is proof of where he&apos;s been and a warning of where he&apos;s headed.
-
               </p>
             </div>
 
@@ -240,12 +267,8 @@ export default function About() {
 
             {/* CTAs */}
             <div className="mt-10 flex flex-wrap gap-4">
-              <a href="#music" className="about-btn-solid">
-                Listen Now
-              </a>
-              <a href="#contact" className="about-btn-ghost">
-                Book Me
-              </a>
+              <a href="#music" className="about-btn-solid">Listen Now</a>
+              <a href="#contact" className="about-btn-ghost">Book Me</a>
             </div>
           </div>
         </div>

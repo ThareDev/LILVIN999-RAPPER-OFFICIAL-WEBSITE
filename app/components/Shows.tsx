@@ -34,112 +34,143 @@ export default function Shows() {
     <section
       id="shows"
       className="relative py-24 lg:py-32 overflow-hidden"
-      style={{ background: "#0A0F14" }}
+      style={{ background: "#080F14" }}
     >
       <style>{`
         @import url('https://fonts.googleapis.com/css2?family=Anton&family=Oswald:wght@400;500;600;700&family=Permanent+Marker&display=swap');
 
+        /* ticket-stub card */
         .stub-card {
           position: relative;
-          background: #0D1620;
-          border: 1px solid rgba(46,74,61,0.3);
+          background: #0A1520;
+          border: 1px solid rgba(57,255,20,0.15);
           clip-path: polygon(
             0 0, 100% 0, 100% calc(100% - 6px),
             calc(100% - 6px) 100%, 0 100%
           );
-          transition: border-color 0.3s ease, transform 0.3s ease, background 0.3s ease;
+          transition: border-color 0.3s ease, transform 0.3s ease,
+                      background 0.3s ease, box-shadow 0.3s ease;
           overflow: hidden;
         }
+        /* left accent bar */
         .stub-card::before {
           content: '';
           position: absolute;
           left: 0; top: 0; bottom: 0;
           width: 3px;
-          background: linear-gradient(to bottom, transparent, #2E4A3D, transparent);
-          opacity: 0.6;
+          background: linear-gradient(to bottom, transparent, #39FF14, transparent);
+          opacity: 0.5;
         }
         .stub-card:hover {
-          border-color: rgba(107,124,115,0.5);
-          background: #132B24;
+          border-color: rgba(57,255,20,0.45);
+          background: #0D1A2A;
           transform: translateX(6px);
+          box-shadow: 0 4px 24px rgba(57,255,20,0.07);
         }
-        .stub-card .perf {
+
+        /* perforated dashed line */
+        .stub-perf {
           position: absolute;
           top: 0; bottom: 0;
           width: 1px;
           background-image: repeating-linear-gradient(
-            to bottom, rgba(107,124,115,0.3) 0, rgba(107,124,115,0.3) 5px, transparent 5px, transparent 11px
+            to bottom,
+            rgba(57,255,20,0.2) 0,
+            rgba(57,255,20,0.2) 5px,
+            transparent 5px,
+            transparent 11px
           );
         }
 
+        /* ticket button */
         .ticket-btn {
           font-family: 'Oswald', sans-serif;
-          font-weight: 600;
+          font-weight: 700;
           font-size: 11px;
           letter-spacing: 0.15em;
           text-transform: uppercase;
-          color: #070C0A;
-          background: #6B7C73;
+          color: #080F14;
+          background: #39FF14;
           padding: 10px 22px;
           border: none;
           cursor: pointer;
-          position: relative;
-          transition: background 0.25s ease, transform 0.25s ease;
+          transition: background 0.25s, box-shadow 0.25s, transform 0.25s;
+          box-shadow: 0 0 16px rgba(57,255,20,0.3);
+          text-decoration: none;
+          display: inline-block;
         }
-        .ticket-btn:hover { background: #fff; transform: translateY(-2px); }
+        .ticket-btn:hover {
+          background: #fff;
+          box-shadow: 0 0 20px rgba(57,255,20,0.15);
+          transform: translateY(-2px);
+        }
 
+        /* notify ghost button */
         .notify-btn {
           font-family: 'Oswald', sans-serif;
-          font-weight: 600;
+          font-weight: 700;
           font-size: 11px;
           letter-spacing: 0.15em;
           text-transform: uppercase;
-          color: #6B7C73;
+          color: #00A3FF;
           background: transparent;
-          border: 1px solid #2E4A3D;
-          padding: 9px 22px;
+          border: 1.5px solid #00A3FF;
+          padding: 10px 22px;
           cursor: pointer;
-          transition: border-color 0.25s, color 0.25s, transform 0.25s;
+          transition: border-color 0.25s, color 0.25s, box-shadow 0.25s, transform 0.25s;
+          text-decoration: none;
+          display: inline-block;
         }
-        .notify-btn:hover { border-color: #6B7C73; color: #fff; transform: translateY(-2px); }
+        .notify-btn:hover {
+          color: #fff;
+          box-shadow: 0 0 18px rgba(0,163,255,0.3);
+          transform: translateY(-2px);
+        }
 
+        /* blinking "On Sale" dot */
         .status-live {
           position: relative;
-          color: #6B7C73;
+          color: #39FF14;
+          font-family: 'Oswald', sans-serif;
+          font-size: 10px;
+          letter-spacing: 0.18em;
+          text-transform: uppercase;
         }
         .status-live::before {
           content: '';
           display: inline-block;
           width: 6px; height: 6px;
           border-radius: 50%;
-          background: #6B7C73;
-          margin-right: 6px;
-          box-shadow: 0 0 8px rgba(107,124,115,0.8);
+          background: #39FF14;
+          margin-right: 7px;
+          vertical-align: middle;
+          box-shadow: 0 0 8px rgba(57,255,20,0.8);
           animation: blink-dot 1.6s ease-in-out infinite;
         }
-        @keyframes blink-dot { 0%,100% { opacity: 1; } 50% { opacity: 0.3; } }
+        @keyframes blink-dot { 0%,100% { opacity: 1; } 50% { opacity: 0.25; } }
 
+        /* VIP box */
         .vip-box {
           position: relative;
-          background: linear-gradient(120deg, rgba(46,74,61,0.12) 0%, transparent 60%);
-          border: 1px solid rgba(61,86,102,0.3);
+          background: linear-gradient(120deg, rgba(0,163,255,0.07) 0%, rgba(8,15,20,0.8) 60%);
+          border: 1px solid rgba(0,163,255,0.25);
         }
         .vip-box::after {
           content: '';
           position: absolute;
           top: 0; right: 0;
-          width: 90px; height: 90px;
-          background: radial-gradient(circle, rgba(107,124,115,0.15) 0%, transparent 70%);
+          width: 100px; height: 100px;
+          background: radial-gradient(circle, rgba(0,163,255,0.15) 0%, transparent 70%);
         }
       `}</style>
 
-      {/* left accent line */}
+      {/* left accent vertical line */}
       <div
         className="absolute left-0 top-0 bottom-0 w-px"
-        style={{ background: "linear-gradient(to bottom, transparent, rgba(46,74,61,0.7), transparent)" }}
+        style={{ background: "linear-gradient(to bottom, transparent, rgba(57,255,20,0.35), transparent)" }}
       />
 
-      {/* huge faded year watermark, sliding */}
+      {/* faded watermark year */}
       <motion.div
         className="absolute -right-10 top-10 select-none pointer-events-none hidden lg:block"
         initial={{ opacity: 0, x: 40 }}
@@ -152,7 +183,7 @@ export default function Shows() {
             fontFamily: "'Anton', sans-serif",
             fontSize: "clamp(100px, 14vw, 220px)",
             color: "transparent",
-            WebkitTextStroke: "1px rgba(107,124,115,0.12)",
+            WebkitTextStroke: "1px rgba(57,255,20,0.07)",
             lineHeight: 1,
           }}
         >
@@ -160,7 +191,8 @@ export default function Shows() {
         </span>
       </motion.div>
 
-      <div className="relative max-w-7xl mx-auto px-6 lg:px-12">
+      <div className="relative max-w-7xl mx-auto px-5 sm:px-8 lg:px-12">
+
         {/* header */}
         <motion.div
           className="flex flex-col md:flex-row md:items-end justify-between gap-6 mb-14"
@@ -171,17 +203,17 @@ export default function Shows() {
         >
           <div>
             <div className="flex items-center gap-3 mb-3">
-              <div style={{ width: 32, height: 1, background: "#2E4A3D" }} />
+              <div style={{ width: 32, height: 1, background: "#39FF14", opacity: 0.5 }} />
               <span
                 style={{
                   fontFamily: "'Oswald', sans-serif",
                   fontSize: 10,
                   letterSpacing: "0.32em",
                   textTransform: "uppercase",
-                  color: "#3D5666",
+                  color: "#00A3FF",
                 }}
               >
-                Live & Direct
+                Live &amp; Direct
               </span>
             </div>
             <h2
@@ -200,9 +232,10 @@ export default function Shows() {
               style={{
                 fontFamily: "'Permanent Marker', cursive",
                 fontSize: 16,
-                color: "#6B7C73",
+                color: "#39FF14",
                 marginTop: 10,
                 transform: "rotate(-1deg)",
+                opacity: 0.8,
               }}
             >
               run it back — 2026 world run
@@ -219,18 +252,20 @@ export default function Shows() {
               whileInView={{ opacity: 1, x: 0 }}
               viewport={{ once: true, margin: "-60px" }}
               transition={{ duration: 0.55, delay: i * 0.12, ease: [0.22, 1, 0.36, 1] }}
-              className={`stub-card ${show.sold ? "opacity-50" : ""}`}
+              className={`stub-card ${show.sold ? "opacity-40" : ""}`}
             >
-              <div className="perf" style={{ left: "84px" }} />
-              <div className="flex items-center gap-4 lg:gap-8 px-5 lg:px-7 py-5 lg:py-6 pl-7 lg:pl-9">
+              <div className="stub-perf" style={{ left: "90px" }} />
+
+              <div className="flex items-center gap-4 lg:gap-8 px-5 lg:px-7 py-5 lg:py-6">
                 {/* date block */}
                 <div className="flex-shrink-0 w-16 lg:w-20 text-center">
                   <div
                     style={{
                       fontFamily: "'Anton', sans-serif",
-                      fontSize: "clamp(20px, 2vw, 26px)",
-                      color: "#fff",
+                      fontSize: "clamp(18px, 2vw, 24px)",
+                      color: "#39FF14",
                       lineHeight: 1,
+                      textShadow: "0 0 14px rgba(57,255,20,0.4)",
                     }}
                   >
                     {show.date}
@@ -238,10 +273,10 @@ export default function Shows() {
                   <div
                     style={{
                       fontFamily: "'Oswald', sans-serif",
-                      fontSize: 10,
+                      fontSize: 9,
                       letterSpacing: "0.15em",
                       textTransform: "uppercase",
-                      color: "rgba(107,124,115,0.6)",
+                      color: "rgba(255,255,255,0.35)",
                       marginTop: 4,
                     }}
                   >
@@ -254,11 +289,12 @@ export default function Shows() {
                   <div
                     style={{
                       fontFamily: "'Oswald', sans-serif",
-                      fontSize: 11,
+                      fontSize: 10,
                       letterSpacing: "0.22em",
                       textTransform: "uppercase",
-                      color: "#6B7C73",
+                      color: "#00A3FF",
                       marginBottom: 4,
+                      opacity: 0.9,
                     }}
                   >
                     {show.event}
@@ -267,7 +303,7 @@ export default function Shows() {
                     <span
                       style={{
                         fontFamily: "'Anton', sans-serif",
-                        fontSize: "clamp(18px, 2vw, 26px)",
+                        fontSize: "clamp(17px, 2vw, 24px)",
                         color: "#fff",
                         textTransform: "uppercase",
                       }}
@@ -280,7 +316,7 @@ export default function Shows() {
                         fontSize: 10,
                         letterSpacing: "0.15em",
                         textTransform: "uppercase",
-                        color: "rgba(61,86,102,0.9)",
+                        color: "rgba(0,163,255,0.6)",
                       }}
                     >
                       {show.country}
@@ -289,8 +325,8 @@ export default function Shows() {
                   <div
                     style={{
                       fontFamily: "'Oswald', sans-serif",
-                      fontSize: 13,
-                      color: "rgba(107,124,115,0.55)",
+                      fontSize: 12,
+                      color: "rgba(255,255,255,0.3)",
                       marginTop: 3,
                       textTransform: "uppercase",
                       letterSpacing: "0.04em",
@@ -300,25 +336,15 @@ export default function Shows() {
                   </div>
                 </div>
 
-                {/* status + cta */}
+                {/* status + CTA */}
                 <div className="flex items-center gap-4 flex-shrink-0">
-                  <span
-                    className={`hidden sm:block status-live`}
-                    style={{
-                      fontFamily: "'Oswald', sans-serif",
-                      fontSize: 10,
-                      letterSpacing: "0.18em",
-                      textTransform: "uppercase",
-                    }}
-                  >
-                    {show.status}
-                  </span>
+                  <span className="status-live hidden sm:block">{show.status}</span>
                   {!show.sold ? (
                     <a
                       href={show.ticketUrl || "#"}
                       target="_blank"
                       rel="noopener noreferrer"
-                      className="ticket-btn flex-shrink-0"
+                      className="ticket-btn"
                     >
                       Tickets
                     </a>
@@ -329,7 +355,7 @@ export default function Shows() {
                         fontSize: 10,
                         letterSpacing: "0.15em",
                         textTransform: "uppercase",
-                        color: "rgba(107,124,115,0.35)",
+                        color: "rgba(255,255,255,0.25)",
                         padding: "10px 22px",
                       }}
                     >
@@ -357,7 +383,7 @@ export default function Shows() {
                 fontSize: 10,
                 letterSpacing: "0.3em",
                 textTransform: "uppercase",
-                color: "#3D5666",
+                color: "#00A3FF",
                 marginBottom: 8,
               }}
             >
@@ -366,7 +392,7 @@ export default function Shows() {
             <h3
               style={{
                 fontFamily: "'Anton', sans-serif",
-                fontSize: "clamp(26px, 3.5vw, 38px)",
+                fontSize: "clamp(26px, 3.5vw, 36px)",
                 color: "#fff",
                 textTransform: "uppercase",
                 marginBottom: 8,
@@ -378,18 +404,16 @@ export default function Shows() {
               style={{
                 fontFamily: "'Oswald', sans-serif",
                 fontSize: 14,
-                color: "rgba(107,124,115,0.7)",
+                color: "rgba(255,255,255,0.45)",
                 maxWidth: 420,
                 lineHeight: 1.7,
               }}
             >
-              Meet & greet, soundcheck access, exclusive merch, and front-of-line
+              Meet &amp; greet, soundcheck access, exclusive merch, and front-of-line
               entry — for those who run with the crew.
             </p>
           </div>
-          <a href="#" className="notify-btn flex-shrink-0">
-            Learn More
-          </a>
+          <a href="#" className="notify-btn flex-shrink-0">Learn More</a>
         </motion.div>
       </div>
     </section>

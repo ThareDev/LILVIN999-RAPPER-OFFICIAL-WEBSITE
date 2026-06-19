@@ -16,43 +16,47 @@ export default function Navbar() {
 
   return (
     <nav
-      className={`fixed top-0 left-0 right-0 z-50 transition-all duration-500 ${scrolled
-          ? "backdrop-blur-md border-b"
-          : "bg-transparent border-b border-transparent"
-        }`}
+      className={`fixed top-0 left-0 right-0 z-50 transition-all duration-500`}
       style={{
-        background: scrolled ? "rgba(15,31,22,0.92)" : "transparent",
-        borderColor: scrolled ? "rgba(46,74,61,0.4)" : "transparent",
+        background: scrolled ? "rgba(8,15,20,0.95)" : "transparent",
+        backdropFilter: scrolled ? "blur(12px)" : "none",
+        borderBottom: scrolled ? "1px solid rgba(57,255,20,0.15)" : "1px solid transparent",
       }}
     >
       <style>{`
-        @import url('https://fonts.googleapis.com/css2?family=Oswald:wght@500;700&family=UnifrakturCook:wght@700&display=swap');
+        @import url('https://fonts.googleapis.com/css2?family=Anton&family=Oswald:wght@400;500;600;700&family=Permanent+Marker&display=swap');
 
         .lv-logo {
-          font-family: 'UnifrakturCook', 'Impact', serif;
+          font-family: 'Anton', Impact, sans-serif;
           letter-spacing: 0.04em;
-          color: #6B7C73;
-          text-shadow: 0 0 14px rgba(46,74,61,0.6);
+          color: #FFFFFF;
+          font-size: 22px;
         }
+        .lv-logo-999 {
+          color: #39FF14;
+          text-shadow: 0 0 12px rgba(57,255,20,0.5);
+        }
+
         .lv-link {
           font-family: 'Oswald', sans-serif;
           font-size: 11px;
           letter-spacing: 0.22em;
           text-transform: uppercase;
-          color: #6B7C73;
+          color: rgba(255,255,255,0.6);
           position: relative;
           padding-bottom: 4px;
           transition: color 0.25s;
+          text-decoration: none;
         }
         .lv-link::after {
           content: '';
           position: absolute;
           left: 0; bottom: 0;
           width: 0; height: 1px;
-          background: #2E4A3D;
+          background: #39FF14;
           transition: width 0.3s ease;
         }
-        .lv-link:hover { color: #ffffff; }
+        .lv-link:hover { color: #39FF14; }
         .lv-link:hover::after { width: 100%; }
 
         .lv-cta {
@@ -61,25 +65,46 @@ export default function Navbar() {
           font-weight: 700;
           letter-spacing: 0.18em;
           text-transform: uppercase;
-          color: #0F1F16;
-          background: #6B7C73;
-          padding: 10px 26px;
+          color: #080F14;
+          background: #39FF14;
+          padding: 10px 24px;
           border: none;
           cursor: pointer;
-          clip-path: polygon(0 0, calc(100% - 9px) 0, 100% 9px, 100% 100%, 0 100%);
-          transition: background 0.25s, color 0.25s;
+          clip-path: polygon(0 0, calc(100% - 8px) 0, 100% 8px, 100% 100%, 0 100%);
+          transition: background 0.25s, box-shadow 0.25s;
+          text-decoration: none;
+          display: inline-block;
+          box-shadow: 0 0 16px rgba(57,255,20,0.25);
         }
-        .lv-cta:hover { background: #2E4A3D; color: #fff; }
+        .lv-cta:hover {
+          background: #00A3FF;
+          color: #fff;
+          box-shadow: 0 0 20px rgba(0,163,255,0.4);
+        }
+
+        .mobile-link {
+          font-family: 'Oswald', sans-serif;
+          font-size: 13px;
+          letter-spacing: 0.2em;
+          text-transform: uppercase;
+          color: rgba(255,255,255,0.7);
+          text-decoration: none;
+          padding: 10px 0;
+          border-bottom: 1px solid rgba(57,255,20,0.08);
+          display: block;
+          transition: color 0.2s;
+        }
+        .mobile-link:hover { color: #39FF14; }
       `}</style>
 
-      <div className="max-w-7xl mx-auto px-6 lg:px-12 flex items-center justify-between h-16 lg:h-20">
+      <div className="max-w-7xl mx-auto px-5 sm:px-8 lg:px-12 flex items-center justify-between h-16 lg:h-18">
         {/* Logo */}
-        <Link href="/" className="lv-logo text-2xl lg:text-3xl">
-          LILVIN<span style={{ color: "#3D5666" }}>999</span>
+        <Link href="/" className="lv-logo">
+          LILVIN<span className="lv-logo-999">999</span>
         </Link>
 
         {/* Desktop Nav */}
-        <div className="hidden lg:flex items-center gap-10">
+        <div className="hidden lg:flex items-center gap-8">
           {links.map((link) => (
             <a key={link} href={`#${link.toLowerCase()}`} className="lv-link">
               {link}
@@ -87,35 +112,33 @@ export default function Navbar() {
           ))}
         </div>
 
-        {/* Right side */}
-        <div className="hidden lg:flex items-center gap-4">
-          <a href="#shows" className="lv-cta">
-            Get Tickets
-          </a>
+        {/* Desktop CTA */}
+        <div className="hidden lg:flex items-center">
+          <a href="#shows" className="lv-cta">Get Tickets</a>
         </div>
 
         {/* Mobile burger */}
         <button
-          className="lg:hidden flex flex-col gap-1.5 p-2"
+          className="lg:hidden flex flex-col justify-center gap-1.5 p-2 w-10 h-10"
           onClick={() => setMenuOpen(!menuOpen)}
-          aria-label="Menu"
+          aria-label="Toggle menu"
         >
           <span
-            className="block w-6 h-0.5 transition-all duration-300"
+            className="block w-6 h-px transition-all duration-300 origin-center"
             style={{
-              background: "#6B7C73",
-              transform: menuOpen ? "rotate(45deg) translateY(8px)" : "none",
+              background: "#39FF14",
+              transform: menuOpen ? "rotate(45deg) translateY(5px)" : "none",
             }}
           />
           <span
-            className="block w-6 h-0.5 transition-all duration-300"
-            style={{ background: "#6B7C73", opacity: menuOpen ? 0 : 1 }}
+            className="block w-6 h-px transition-all duration-300"
+            style={{ background: "#39FF14", opacity: menuOpen ? 0 : 1 }}
           />
           <span
-            className="block w-6 h-0.5 transition-all duration-300"
+            className="block w-6 h-px transition-all duration-300 origin-center"
             style={{
-              background: "#6B7C73",
-              transform: menuOpen ? "rotate(-45deg) translateY(-8px)" : "none",
+              background: "#39FF14",
+              transform: menuOpen ? "rotate(-45deg) translateY(-5px)" : "none",
             }}
           />
         </button>
@@ -123,26 +146,26 @@ export default function Navbar() {
 
       {/* Mobile menu */}
       <div
-        className="lg:hidden overflow-hidden transition-all duration-400"
+        className="lg:hidden overflow-hidden transition-all duration-300"
         style={{
-          maxHeight: menuOpen ? 400 : 0,
+          maxHeight: menuOpen ? 360 : 0,
           opacity: menuOpen ? 1 : 0,
-          background: "rgba(13,22,32,0.97)",
-          borderTop: "1px solid rgba(46,74,61,0.3)",
+          background: "rgba(8,15,20,0.98)",
+          borderTop: menuOpen ? "1px solid rgba(57,255,20,0.12)" : "none",
         }}
       >
-        <div className="px-6 py-6 flex flex-col gap-5">
+        <div className="px-5 py-4 flex flex-col">
           {links.map((link) => (
             <a
               key={link}
               href={`#${link.toLowerCase()}`}
-              className="lv-link !text-sm"
+              className="mobile-link"
               onClick={() => setMenuOpen(false)}
             >
               {link}
             </a>
           ))}
-          <a href="#shows" className="lv-cta text-center mt-2">
+          <a href="#shows" className="lv-cta text-center mt-4 w-full">
             Get Tickets
           </a>
         </div>
