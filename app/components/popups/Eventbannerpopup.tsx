@@ -1,196 +1,125 @@
 "use client";
 
 import Image from "next/image";
-import bannerImg from "@/public/banners/banner.jpeg";
-import { useEffect, useRef, useState, useCallback } from "react";
+import artist from "@/public/heroooo.png";
+import { useEffect, useState } from "react";
 import { motion, AnimatePresence, Variants } from "framer-motion";
 
-interface Particle {
-  x: number;
-  y: number;
-  vx: number;
-  vy: number;
-  alpha: number;
-  color: string;
-  size: number;
-  decay: number;
-  trail: { x: number; y: number; alpha: number }[];
+/* ─────────────────────────────────────
+   ⚠️ CONFIG — swap these for the real thing
+───────────────────────────────────── */
+
+// Dummy target date for testing the countdown.
+// Replace with the real album drop date/time, e.g.
+// new Date("2026-07-18T00:00:00+05:30")
+const DUMMY_TARGET_OFFSET_MS =
+  6 * 24 * 60 * 60 * 1000 + // 6 days
+  14 * 60 * 60 * 1000 + // 14 hours
+  38 * 60 * 1000 + // 38 minutes
+  52 * 1000; // 52 seconds
+
+const SPOTIFY_ALBUM_URL = "https://open.spotify.com/album/REPLACE_WITH_ALBUM_ID";
+
+/* ─────────────────────────────────────
+   Countdown hook
+───────────────────────────────────── */
+interface TimeLeft {
+  days: number;
+  hours: number;
+  minutes: number;
+  seconds: number;
 }
 
-type Origin = "bl" | "br" | "bm-left" | "bm-right";
+function useCountdown(target: Date): TimeLeft {
+  const [timeLeft, setTimeLeft] = useState<TimeLeft>({
+    days: 0,
+    hours: 0,
+    minutes: 0,
+    seconds: 0,
+  });
 
-function FireworksCanvas({ active }: { active: boolean }) {
-  const canvasRef = useRef<HTMLCanvasElement>(null);
-  const particlesRef = useRef<Particle[]>([]);
-  const frameRef = useRef<number>(0);
-  const launchRef = useRef<ReturnType<typeof setInterval> | null>(null);
-  const originIdx = useRef<number>(0);
-
-  // Crimson / ember / ash palette matching the Karalilla poster
-  const COLORS = [
-    "#cc0000", "#ff2200", "#ff4400",
-    "#ff8800", "#ffaa00", "#ffcc44",
-    "#ffffff", "#ffddcc",
-    "#880000", "#ff1111",
-  ];
-
-  const getOriginXY = useCallback((origin: Origin, w: number, h: number): [number, number] => {
-    const yBase = h - 8;
-    switch (origin) {
-      case "bl":       return [14 + Math.random() * 20,           yBase];
-      case "br":       return [w - 14 - Math.random() * 20,       yBase];
-      case "bm-left":  return [w * 0.28 + Math.random() * w * 0.08, yBase];
-      case "bm-right": return [w * 0.64 + Math.random() * w * 0.08, yBase];
-    }
-  }, []);
-
-  const getAngleRange = (origin: Origin): [number, number] => {
-    switch (origin) {
-      case "bl":       return [-Math.PI * 0.85, -Math.PI * 0.15];
-      case "br":       return [-Math.PI * 0.85, -Math.PI * 0.15];
-      case "bm-left":  return [-Math.PI * 0.9,  -Math.PI * 0.1];
-      case "bm-right": return [-Math.PI * 0.9,  -Math.PI * 0.1];
-    }
-  };
-
-  const burst = useCallback((origin: Origin) => {
-    const canvas = canvasRef.current;
-    if (!canvas) return;
-    const [cx, cy] = getOriginXY(origin, canvas.width, canvas.height);
-    const [aMin, aMax] = getAngleRange(origin);
-
-    const count = 42 + Math.random() * 20;
-    for (let i = 0; i < count; i++) {
-      const angle = aMin + Math.random() * (aMax - aMin);
-      const speed = 1.6 + Math.random() * 4.2;
-      particlesRef.current.push({
-        x: cx, y: cy,
-        vx: Math.cos(angle) * speed,
-        vy: Math.sin(angle) * speed,
-        alpha: 0.9 + Math.random() * 0.1,
-        color: COLORS[Math.floor(Math.random() * COLORS.length)],
-        size: 1.2 + Math.random() * 2.0,
-        decay: 0.009 + Math.random() * 0.007,
-        trail: [],
-      });
-    }
-
-    // ember ring
-    for (let i = 0; i < 14; i++) {
-      const angle = aMin + (i / 14) * (aMax - aMin);
-      particlesRef.current.push({
-        x: cx, y: cy,
-        vx: Math.cos(angle) * (5.0 + Math.random() * 1.5),
-        vy: Math.sin(angle) * (5.0 + Math.random() * 1.5),
-        alpha: 0.8,
-        color: "#ff6600",
-        size: 1.0,
-        decay: 0.012,
-        trail: [],
-      });
-    }
-  }, [getOriginXY]); // eslint-disable-line
-
-  const draw = useCallback(() => {
-    const canvas = canvasRef.current;
-    if (!canvas) return;
-    const ctx = canvas.getContext("2d");
-    if (!ctx) return;
-
-    ctx.clearRect(0, 0, canvas.width, canvas.height);
-    particlesRef.current = particlesRef.current.filter(p => p.alpha > 0.02);
-
-    for (const p of particlesRef.current) {
-      p.trail.push({ x: p.x, y: p.y, alpha: p.alpha });
-      if (p.trail.length > 9) p.trail.shift();
-
-      for (let t = 1; t < p.trail.length; t++) {
-        const ratio = t / p.trail.length;
-        ctx.globalAlpha = p.trail[t].alpha * ratio * 0.45;
-        ctx.beginPath();
-        ctx.moveTo(p.trail[t - 1].x, p.trail[t - 1].y);
-        ctx.lineTo(p.trail[t].x, p.trail[t].y);
-        ctx.strokeStyle = p.color;
-        ctx.lineWidth = p.size * ratio * 0.75;
-        ctx.lineCap = "round";
-        ctx.stroke();
+  useEffect(() => {
+    const tick = () => {
+      const diff = target.getTime() - Date.now();
+      if (diff <= 0) {
+        setTimeLeft({ days: 0, hours: 0, minutes: 0, seconds: 0 });
+        return;
       }
-
-      ctx.globalAlpha = p.alpha;
-      ctx.beginPath();
-      ctx.arc(p.x, p.y, p.size, 0, Math.PI * 2);
-      ctx.fillStyle = p.color;
-      ctx.fill();
-
-      ctx.globalAlpha = p.alpha * 0.22;
-      const grd = ctx.createRadialGradient(p.x, p.y, 0, p.x, p.y, p.size * 5);
-      grd.addColorStop(0, p.color);
-      grd.addColorStop(1, "transparent");
-      ctx.beginPath();
-      ctx.arc(p.x, p.y, p.size * 5, 0, Math.PI * 2);
-      ctx.fillStyle = grd;
-      ctx.fill();
-
-      ctx.globalAlpha = 1;
-
-      p.x += p.vx;
-      p.y += p.vy;
-      p.vy += 0.045;
-      p.vx *= 0.987;
-      p.vy *= 0.987;
-      p.alpha -= p.decay;
-    }
-
-    frameRef.current = requestAnimationFrame(draw);
-  }, []);
-
-  useEffect(() => {
-    const canvas = canvasRef.current;
-    if (!canvas) return;
-    const resize = () => {
-      canvas.width = canvas.offsetWidth;
-      canvas.height = canvas.offsetHeight;
+      setTimeLeft({
+        days: Math.floor(diff / (1000 * 60 * 60 * 24)),
+        hours: Math.floor((diff / (1000 * 60 * 60)) % 24),
+        minutes: Math.floor((diff / (1000 * 60)) % 60),
+        seconds: Math.floor((diff / 1000) % 60),
+      });
     };
-    resize();
-    window.addEventListener("resize", resize);
-    return () => window.removeEventListener("resize", resize);
-  }, []);
+    tick();
+    const id = setInterval(tick, 1000);
+    return () => clearInterval(id);
+  }, [target]);
 
-  const SEQUENCE: Origin[] = ["bl", "br", "bm-left", "bm-right"];
+  return timeLeft;
+}
 
-  useEffect(() => {
-    if (!active) {
-      cancelAnimationFrame(frameRef.current);
-      if (launchRef.current) clearInterval(launchRef.current);
-      return;
-    }
+const pad = (n: number) => n.toString().padStart(2, "0");
 
-    frameRef.current = requestAnimationFrame(draw);
-
-    const t1 = setTimeout(() => burst("bl"),       0);
-    const t2 = setTimeout(() => burst("br"),       400);
-    const t3 = setTimeout(() => burst("bm-left"),  900);
-    const t4 = setTimeout(() => burst("bm-right"), 1400);
-
-    launchRef.current = setInterval(() => {
-      const origin = SEQUENCE[originIdx.current % SEQUENCE.length];
-      originIdx.current++;
-      burst(origin);
-    }, 1800);
-
-    return () => {
-      cancelAnimationFrame(frameRef.current);
-      if (launchRef.current) clearInterval(launchRef.current);
-      clearTimeout(t1); clearTimeout(t2); clearTimeout(t3); clearTimeout(t4);
-    };
-  }, [active, burst, draw]); // eslint-disable-line
-
+/* ─────────────────────────────────────
+   Icons
+───────────────────────────────────── */
+function CalendarIcon() {
   return (
-    <canvas
-      ref={canvasRef}
-      className="absolute inset-0 w-full h-full pointer-events-none"
-      style={{ zIndex: 5 }}
-    />
+    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#39FF14" strokeWidth="2">
+      <rect x="3" y="5" width="18" height="16" rx="2" />
+      <path d="M16 3v4M8 3v4M3 10h18" />
+    </svg>
+  );
+}
+
+function VinylIcon() {
+  return (
+    <svg width="22" height="22" viewBox="0 0 24 24" fill="none">
+      <circle cx="12" cy="12" r="10" stroke="#39FF14" strokeWidth="1.6" />
+      <circle cx="12" cy="12" r="4" stroke="#39FF14" strokeWidth="1.6" />
+      <circle cx="12" cy="12" r="1.4" fill="#39FF14" />
+    </svg>
+  );
+}
+
+function HeadphoneIcon() {
+  return (
+    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#080F14" strokeWidth="2">
+      <path d="M3 15v-3a9 9 0 0 1 18 0v3" />
+      <rect x="2" y="14" width="5" height="7" rx="2" />
+      <rect x="17" y="14" width="5" height="7" rx="2" />
+    </svg>
+  );
+}
+
+function SpotifyIcon() {
+  return (
+    <svg width="22" height="22" viewBox="0 0 24 24" fill="#080F14">
+      <circle cx="12" cy="12" r="12" fill="#39FF14" />
+      <path
+        d="M6.5 9.8c3.4-1 7.8-.7 10.6 1"
+        stroke="#080F14"
+        strokeWidth="1.4"
+        strokeLinecap="round"
+        fill="none"
+      />
+      <path
+        d="M6.9 12.9c2.9-.85 6.6-.6 9 .8"
+        stroke="#080F14"
+        strokeWidth="1.3"
+        strokeLinecap="round"
+        fill="none"
+      />
+      <path
+        d="M7.3 15.9c2.4-.65 5.4-.5 7.4.6"
+        stroke="#080F14"
+        strokeWidth="1.1"
+        strokeLinecap="round"
+        fill="none"
+      />
+    </svg>
   );
 }
 
@@ -204,20 +133,28 @@ const backdropVariants: Variants = {
 };
 
 const panelVariants: Variants = {
-  hidden: { scale: 0.8, opacity: 0, y: 40 },
+  hidden: { scale: 0.9, opacity: 0, y: 30 },
   show: {
-    scale: 1, opacity: 1, y: 0,
-    transition: { duration: 0.6, ease: [0.22, 1, 0.36, 1] },
+    scale: 1,
+    opacity: 1,
+    y: 0,
+    transition: { duration: 0.55, ease: [0.22, 1, 0.36, 1] },
   },
   exit: {
-    scale: 0.85, opacity: 0, y: 24,
-    transition: { duration: 0.35, ease: [0.4, 0, 1, 1] },
+    scale: 0.92,
+    opacity: 0,
+    y: 18,
+    transition: { duration: 0.3, ease: [0.4, 0, 1, 1] },
   },
 };
 
-const ctaVariants: Variants = {
-  hidden: { opacity: 0, y: 14 },
-  show: { opacity: 1, y: 0, transition: { duration: 0.5, ease: [0.22, 1, 0.36, 1] } },
+const containerVariants: Variants = {
+  hidden: {},
+  show: { transition: { staggerChildren: 0.08, delayChildren: 0.2 } },
+};
+const riseIn: Variants = {
+  hidden: { y: 16, opacity: 0 },
+  show: { y: 0, opacity: 1, transition: { duration: 0.45, ease: [0.22, 1, 0.36, 1] } },
 };
 
 /* ─────────────────────────────────────
@@ -225,7 +162,8 @@ const ctaVariants: Variants = {
 ───────────────────────────────────── */
 export default function EventBannerPopup() {
   const [open, setOpen] = useState(false);
-  const [imgLoaded, setImgLoaded] = useState(false);
+  const [target] = useState(() => new Date(Date.now() + DUMMY_TARGET_OFFSET_MS));
+  const { days, hours, minutes, seconds } = useCountdown(target);
 
   useEffect(() => {
     const timer = setTimeout(() => setOpen(true), 1200);
@@ -234,87 +172,73 @@ export default function EventBannerPopup() {
 
   const close = () => setOpen(false);
 
+  const UNITS = [
+    { value: days, label: "Days" },
+    { value: hours, label: "Hours" },
+    { value: minutes, label: "Minutes" },
+    { value: seconds, label: "Seconds" },
+  ];
+
   return (
     <>
       <style>{`
-        @import url('https://fonts.googleapis.com/css2?family=Oswald:wght@700&display=swap');
+        @import url('https://fonts.googleapis.com/css2?family=Anton&family=Oswald:wght@400;500;600;700&family=Permanent+Marker&display=swap');
 
-        .popup-close {
-          position: absolute; top: 12px; right: 12px;
-          width: 32px; height: 32px;
-          background: rgba(0,0,0,0.78);
-          border: 1px solid rgba(255,255,255,0.18);
-          color: rgba(255,255,255,0.85);
+        .lv-popup-close {
+          position: absolute; top: 14px; right: 14px;
+          width: 34px; height: 34px; border-radius: 50%;
+          background: rgba(255,255,255,0.06);
+          border: 1px solid rgba(255,255,255,0.25);
+          color: rgba(255,255,255,0.9);
           font-size: 14px; cursor: pointer;
           display: flex; align-items: center; justify-content: center;
-          clip-path: polygon(8px 0, 100% 0, 100% 100%, 0 100%, 0 8px);
-          transition: background 0.2s, border-color 0.2s;
+          transition: background 0.2s, border-color 0.2s, transform 0.2s;
           z-index: 60;
           backdrop-filter: blur(4px);
         }
-        .popup-close:hover { background: rgba(180,0,0,0.65); border-color: #cc0000; }
-
-        .corner-accent {
-          position: absolute; width: 20px; height: 20px;
-          border-color: #aa0000; border-style: solid;
-          z-index: 55; pointer-events: none;
+        .lv-popup-close:hover {
+          background: rgba(57,255,20,0.12);
+          border-color: #39FF14;
+          transform: rotate(90deg);
         }
 
-        .popup-ticket-btn {
+        .lv-listen-btn {
           display: flex; align-items: center; justify-content: center; gap: 10px;
-          width: 100%; padding: 14px 0;
-          background: linear-gradient(135deg, #aa0000 0%, #cc1100 60%, #ff2200 100%);
-          color: #fff;
-          font-family: 'Oswald', Impact, sans-serif;
-          font-size: 13px; font-weight: 700;
-          letter-spacing: 0.22em; text-transform: uppercase;
+          width: 100%; padding: 16px 0;
+          background: #39FF14;
+          color: #080F14;
+          font-family: 'Oswald', sans-serif;
+          font-size: 14px; font-weight: 700;
+          letter-spacing: 0.14em; text-transform: uppercase;
           text-decoration: none;
-          clip-path: polygon(0 0, calc(100% - 12px) 0, 100% 12px, 100% 100%, 0 100%);
-          position: relative; overflow: hidden; transition: filter 0.2s;
+          border-radius: 999px;
+          box-shadow: 0 0 24px rgba(57,255,20,0.35);
+          transition: box-shadow 0.25s, transform 0.2s, filter 0.2s;
         }
-        .popup-ticket-btn::before {
-          content: ''; position: absolute; inset: 0;
-          background: linear-gradient(120deg, rgba(255,255,255,0.18) 0%, transparent 55%);
-          opacity: 0; transition: opacity 0.3s;
+        .lv-listen-btn:hover {
+          box-shadow: 0 0 34px rgba(57,255,20,0.6);
+          transform: translateY(-2px);
+          filter: brightness(1.05);
         }
-        .popup-ticket-btn:hover { filter: brightness(1.15); }
-        .popup-ticket-btn:hover::before { opacity: 1; }
+        .lv-listen-btn:active { transform: translateY(0); }
 
-        @keyframes ticker-scroll {
-          0%   { transform: translateX(0); }
-          100% { transform: translateX(-50%); }
+        .lv-presave {
+          display: inline-flex; align-items: center; gap: 8px;
+          background: none; border: none; cursor: pointer;
+          font-family: 'Oswald', sans-serif;
+          font-size: 12px; font-weight: 600;
+          letter-spacing: 0.16em; text-transform: uppercase;
+          color: #00A3FF;
+          text-decoration: none;
+          transition: opacity 0.2s;
         }
-        .ticker-inner { animation: ticker-scroll 16s linear infinite; white-space: nowrap; display: inline-block; }
+        .lv-presave:hover { opacity: 0.8; }
 
-        @keyframes badge-pulse {
-          0%, 100% { box-shadow: 0 0 0 0 rgba(180,0,0,0.8); }
-          50%       { box-shadow: 0 0 0 5px rgba(180,0,0,0); }
-        }
-        .live-dot { animation: badge-pulse 1.8s ease-in-out infinite; }
-
-        .popup-scanlines {
-          background-image: repeating-linear-gradient(
-            0deg, transparent, transparent 2px,
-            rgba(255,255,255,0.012) 2px, rgba(255,255,255,0.012) 4px
-          );
-        }
-
-        /* subtle red inner glow on panel */
-        .panel-glow {
-          box-shadow:
-            0 0 80px rgba(180,0,0,0.35),
-            0 0 160px rgba(180,0,0,0.14),
-            inset 0 0 40px rgba(100,0,0,0.18);
-        }
-
-        @keyframes shimmer {
-          0%   { background-position: -200% 0; }
-          100% { background-position:  200% 0; }
-        }
-        .img-skeleton {
-          background: linear-gradient(90deg, #0d0000 25%, #1a0505 50%, #0d0000 75%);
-          background-size: 200% 100%;
-          animation: shimmer 1.4s ease-in-out infinite;
+        .lv-grain::before {
+          content: '';
+          position: absolute; inset: 0;
+          background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='80' height='80'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='2' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.035'/%3E%3C/svg%3E");
+          pointer-events: none; z-index: 1;
         }
       `}</style>
 
@@ -331,17 +255,21 @@ export default function EventBannerPopup() {
             {/* backdrop */}
             <div
               className="absolute inset-0"
-              style={{ background: "rgba(0,0,0,0.92)", backdropFilter: "blur(10px)" }}
+              style={{ background: "rgba(2,6,9,0.92)", backdropFilter: "blur(10px)" }}
             />
 
             {/* panel */}
             <motion.div
-              className="relative overflow-hidden panel-glow"
+              className="lv-grain relative overflow-hidden w-full"
               style={{
-                width: "100%",
                 maxWidth: 420,
-                background: "#050000",
-                border: "1px solid rgba(180,0,0,0.5)",
+                maxHeight: "92vh",
+                overflowY: "auto",
+                background: "#080F14",
+                border: "1px solid rgba(57,255,20,0.18)",
+                borderRadius: 22,
+                boxShadow:
+                  "0 0 60px rgba(57,255,20,0.12), 0 20px 60px rgba(0,0,0,0.6)",
               }}
               variants={panelVariants}
               initial="hidden"
@@ -349,115 +277,271 @@ export default function EventBannerPopup() {
               exit="exit"
               onClick={(e) => e.stopPropagation()}
             >
-              {/* scanlines */}
-              <div className="popup-scanlines absolute inset-0 pointer-events-none z-[6]" />
-
-              {/* Fireworks — ember/crimson palette */}
-              <FireworksCanvas active={open && imgLoaded} />
-
-              {/* corner brackets */}
-              <div className="corner-accent" style={{ top: 0, left: 0, borderWidth: "2px 0 0 2px" }} />
-              <div className="corner-accent" style={{ top: 0, right: 0, borderWidth: "2px 2px 0 0" }} />
-              <div className="corner-accent" style={{ bottom: 0, left: 0, borderWidth: "0 0 2px 2px" }} />
-              <div className="corner-accent" style={{ bottom: 0, right: 0, borderWidth: "0 2px 2px 0" }} />
-
-              {/* top accent line */}
+              {/* ── Header: image as background, text overlaid ── */}
               <div
-                className="absolute top-0 left-0 right-0 h-px z-[56]"
-                style={{ background: "linear-gradient(to right, transparent, #cc0000, #ff4400, transparent)" }}
-              />
-
-              {/* close */}
-              <button className="popup-close" onClick={close} aria-label="Close">✕</button>
-
-              {/* ── Banner Image ── */}
-              <div
-                className="relative w-full"
-                style={{ aspectRatio: "1/1", zIndex: 20 }}
+                className="relative w-full overflow-hidden"
+                style={{
+                  aspectRatio: "4/3",
+                  minHeight: 240,
+                }}
               >
-                {!imgLoaded && (
-                  <div className="img-skeleton absolute inset-0 z-10" />
-                )}
-
                 <Image
-                  src={bannerImg}
-                  alt="කැරැල්ල — දකුණු රටේ Hip-Hop ආගමනය"
+                  src={artist}
+                  alt="LILVIN999"
                   fill
-                  className="object-cover object-top"
                   priority
-                  onLoad={() => setImgLoaded(true)}
-                  style={{ opacity: imgLoaded ? 1 : 0, transition: "opacity 0.4s ease" }}
-                />
-
-                {/* COMING SOON badge */}
-                <div
-                  className="live-dot absolute top-3 left-3 flex items-center gap-2 px-3 py-1 z-30"
+                  className="object-cover"
                   style={{
-                    background: "rgba(0,0,0,0.85)",
-                    border: "1px solid #aa0000",
-                    backdropFilter: "blur(4px)",
-                    opacity: imgLoaded ? 1 : 0,
-                    transition: "opacity 0.4s ease 0.3s",
+                    objectPosition: "85% 15%",
+                    filter: "contrast(1.05) saturate(1.05) brightness(0.85)",
                   }}
-                >
-                  <span style={{ width: 6, height: 6, borderRadius: "50%", background: "#cc0000", display: "inline-block" }} />
-                  <span style={{ fontFamily: "'Oswald', Impact, sans-serif", fontSize: 9, letterSpacing: "0.28em", color: "#cc0000", textTransform: "uppercase" }}>
-                    June 2026
-                  </span>
-                </div>
-
-                {/* bottom fade */}
-                <div
-                  className="absolute inset-x-0 bottom-0 h-10 z-[25]"
-                  style={{ background: "linear-gradient(to top, #050000, transparent)" }}
                 />
-              </div>
 
-              {/* ── CTA ── */}
-              <motion.div
-                className="relative px-5 pt-3 pb-5 z-40"
-                variants={ctaVariants}
-                initial="hidden"
-                animate={imgLoaded ? "show" : "hidden"}
-                transition={{ delay: 0.3 }}
-              >
-                <motion.a
-                  href="https://keralla.kodikaraentertainments.com/?fbclid=IwZXh0bgNhZW0CMTEAc3J0YwZhcHBfaWQPMjc1MjU0NjkyNTk4Mjc5AAEeR2EDGVpNBL3zuvjHJvJ93dCqldKjWlipHKuDKzNtavRx0pE_09Pv8b5Ddcc_aem_rWTPu6_RWu0SKcgMAFsMLw"
-                  className="popup-ticket-btn"
-                  onClick={close}
-                  whileHover={{ scale: 1.02 }}
-                  whileTap={{ scale: 0.97 }}
+                {/* dark gradient so text stays legible over the photo, without hiding the face on the right */}
+                <div
+                  className="absolute inset-0"
+                  style={{
+                    background:
+                      "linear-gradient(115deg, #080F14 0%, rgba(8,15,20,0.9) 26%, rgba(8,15,20,0.35) 46%, rgba(8,15,20,0) 62%), linear-gradient(to top, #080F14 0%, transparent 40%)",
+                  }}
+                />
+
+                {/* close */}
+                <button className="lv-popup-close" onClick={close} aria-label="Close">
+                  ✕
+                </button>
+
+                {/* text block sits on top of the image */}
+                <motion.div
+                  variants={containerVariants}
+                  initial="hidden"
+                  animate="show"
+                  className="absolute inset-0 flex flex-col justify-center px-6"
+                  style={{ zIndex: 2 }}
                 >
-                  <span style={{ width: 7, height: 7, borderRadius: "50%", background: "#fff", display: "inline-block", flexShrink: 0 }} />
-                  Get Tickets — Samanala Ground, Galle
-                  <span>→</span>
-                </motion.a>
-
-                <div className="text-center mt-3">
-                  <button
-                    onClick={close}
+                  <motion.p
+                    variants={riseIn}
                     style={{
-                      background: "none", border: "none", cursor: "pointer",
                       fontFamily: "'Oswald', sans-serif",
-                      fontSize: 9, letterSpacing: "0.22em",
-                      color: "rgba(90,40,40,0.9)", textTransform: "uppercase",
+                      fontSize: 11,
+                      fontWeight: 600,
+                      letterSpacing: "0.28em",
+                      textTransform: "uppercase",
+                      color: "#39FF14",
+                      marginBottom: 8,
                     }}
                   >
-                    Maybe later
-                  </button>
-                </div>
-              </motion.div>
+                    New Album Alert
+                  </motion.p>
 
-              {/* ── ticker ── */}
-              <div style={{ background: "linear-gradient(90deg, #880000, #cc0000, #880000)", overflow: "hidden", padding: "5px 0", position: "relative", zIndex: 40 }}>
-                <div className="ticker-inner">
-                  {Array.from({ length: 8 }, (_, i) => (
-                    <span key={i} style={{ fontFamily: "Impact, Oswald, sans-serif", fontSize: 9, letterSpacing: "0.28em", color: "#fff", textTransform: "uppercase", marginRight: 28 }}>
-                      කැරැල්ල &nbsp;🔥&nbsp; JUNE 2026 &nbsp;★&nbsp; SAMANALA GROUND &nbsp;★&nbsp; GALLE &nbsp;★&nbsp; දකුණු රටේ HIP-HOP ආගමනය &nbsp;★&nbsp;
+                  <motion.h1
+                    variants={riseIn}
+                    style={{
+                      margin: 0,
+                      lineHeight: 0.88,
+                      fontFamily: "'Anton', Impact, sans-serif",
+                      fontSize: "clamp(38px, 11vw, 56px)",
+                      letterSpacing: "-0.5px",
+                    }}
+                  >
+                    <span style={{ color: "#FFFFFF" }}>LILVIN</span>
+                    <span
+                      style={{
+                        color: "#39FF14",
+                        textShadow:
+                          "0 0 24px rgba(57,255,20,0.45), 0 0 48px rgba(57,255,20,0.15)",
+                      }}
+                    >
+                      999
                     </span>
-                  ))}
-                </div>
+                  </motion.h1>
+
+                  <motion.p
+                    variants={riseIn}
+                    style={{
+                      fontFamily: "'Permanent Marker', cursive",
+                      fontSize: 22,
+                      color: "#39FF14",
+                      marginTop: 10,
+                      marginBottom: 0,
+                      transform: "rotate(-1deg)",
+                      opacity: 0.95,
+                    }}
+                  >
+                    &ldquo;Born to Music.&rdquo;
+                  </motion.p>
+                </motion.div>
               </div>
+
+              <motion.div
+                variants={containerVariants}
+                initial="hidden"
+                animate="show"
+                className="relative px-6 pt-6 pb-7"
+              >
+                {/* description */}
+                <motion.p
+                  variants={riseIn}
+                  style={{
+                    fontFamily: "'Oswald', sans-serif",
+                    fontSize: 14,
+                    lineHeight: 1.7,
+                    color: "rgba(255,255,255,0.5)",
+                    letterSpacing: "0.01em",
+                    marginTop: -6,
+                    marginBottom: 20,
+                  }}
+                >
+                  Built from the block up. Every verse carved out of concrete,
+                  every hook earned the hard way.
+                </motion.p>
+
+                <div
+                  style={{
+                    height: 1,
+                    background: "rgba(255,255,255,0.08)",
+                    marginBottom: 22,
+                  }}
+                />
+
+                {/* ── Countdown ── */}
+                <motion.div variants={riseIn} style={{ marginBottom: 22 }}>
+                  <div
+                    style={{
+                      display: "flex",
+                      alignItems: "center",
+                      gap: 8,
+                      marginBottom: 12,
+                    }}
+                  >
+                    <CalendarIcon />
+                    <span
+                      style={{
+                        fontFamily: "'Oswald', sans-serif",
+                        fontSize: 11,
+                        fontWeight: 600,
+                        letterSpacing: "0.22em",
+                        textTransform: "uppercase",
+                        color: "#39FF14",
+                      }}
+                    >
+                      Album Drops In
+                    </span>
+                  </div>
+
+                  <div
+                    style={{
+                      display: "grid",
+                      gridTemplateColumns: "repeat(4, 1fr)",
+                      gap: 8,
+                    }}
+                  >
+                    {UNITS.map((u) => (
+                      <div
+                        key={u.label}
+                        style={{
+                          background: "rgba(255,255,255,0.03)",
+                          border: "1px solid rgba(57,255,20,0.15)",
+                          borderRadius: 12,
+                          padding: "12px 0",
+                          textAlign: "center",
+                        }}
+                      >
+                        <div
+                          style={{
+                            fontFamily: "'Anton', sans-serif",
+                            fontSize: "clamp(22px, 6vw, 30px)",
+                            color: "#39FF14",
+                            textShadow: "0 0 16px rgba(57,255,20,0.35)",
+                            lineHeight: 1,
+                          }}
+                        >
+                          {pad(u.value)}
+                        </div>
+                        <div
+                          style={{
+                            fontFamily: "'Oswald', sans-serif",
+                            fontSize: 8.5,
+                            letterSpacing: "0.16em",
+                            textTransform: "uppercase",
+                            color: "rgba(255,255,255,0.35)",
+                            marginTop: 6,
+                          }}
+                        >
+                          {u.label}
+                        </div>
+                      </div>
+                    ))}
+                  </div>
+                </motion.div>
+
+                {/* ── Wait line ── */}
+                <motion.div
+                  variants={riseIn}
+                  style={{
+                    display: "flex",
+                    alignItems: "center",
+                    gap: 12,
+                    marginBottom: 22,
+                  }}
+                >
+                  <VinylIcon />
+                  <div>
+                    <div
+                      style={{
+                        fontFamily: "'Oswald', sans-serif",
+                        fontSize: 14,
+                        fontWeight: 700,
+                        letterSpacing: "0.04em",
+                        textTransform: "uppercase",
+                        color: "#FFFFFF",
+                      }}
+                    >
+                      The Wait Is Almost Over
+                    </div>
+                    <div
+                      style={{
+                        fontFamily: "'Oswald', sans-serif",
+                        fontSize: 12,
+                        color: "rgba(255,255,255,0.4)",
+                        marginTop: 2,
+                      }}
+                    >
+                      Be the first to experience it.
+                    </div>
+                  </div>
+                </motion.div>
+
+                {/* ── CTA ── */}
+                <motion.a
+                  variants={riseIn}
+                  href={SPOTIFY_ALBUM_URL}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="lv-listen-btn"
+                  whileHover={{ scale: 1.015 }}
+                  whileTap={{ scale: 0.98 }}
+                >
+                  <HeadphoneIcon />
+                  Listen To Album
+                  <span style={{ marginLeft: 2 }}>→</span>
+                </motion.a>
+
+                <motion.div
+                  variants={riseIn}
+                  style={{ textAlign: "center", marginTop: 16 }}
+                >
+                  <a
+                    href={SPOTIFY_ALBUM_URL}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="lv-presave"
+                  >
+                    Pre-save on Spotify
+                    <SpotifyIcon />
+                  </a>
+                </motion.div>
+              </motion.div>
             </motion.div>
           </motion.div>
         )}
