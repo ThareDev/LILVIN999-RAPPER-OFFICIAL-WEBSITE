@@ -1,6 +1,6 @@
 import type { MetadataRoute } from "next";
 
-const BASE_URL = "https://lilvin999.com"; // 🔁 Replace with your actual domain
+const BASE_URL = "https://lilvin999.com";
 
 export default function robots(): MetadataRoute.Robots {
   return {

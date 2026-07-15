@@ -1,14 +1,15 @@
 {
-  "name": "LILVIN999 — Official",
+  "name": "LILVIN999 — Official Site",
   "short_name": "LILVIN999",
-  "description": "Official website of LILVIN999 — Sri Lanka's loyalty-driven street rapper. Stream music, book shows, and follow the journey.",
+  "description": "Official website of LILVIN999 — Sri Lanka's loyalty-driven street rapper from Piliyandala. Trap, melodic rap, and street storytelling. Stream music, book shows, and follow the journey.",
   "start_url": "/",
+  "id": "/",
   "display": "standalone",
-  "background_color": "#070C0A",
-  "theme_color": "#2E4A3D",
   "orientation": "portrait-primary",
-  "categories": ["music", "entertainment"],
+  "background_color": "#080F14",
+  "theme_color": "#080F14",
   "lang": "en",
+  "categories": ["music", "entertainment"],
   "icons": [
     {
       "src": "/favicon-16x16.png",
@@ -26,22 +27,43 @@
       "type": "image/png"
     },
     {
-      "src": "/android-chrome-192x192.png",
+      "src": "/icon-192x192.png",
       "sizes": "192x192",
       "type": "image/png",
       "purpose": "any"
     },
     {
-      "src": "/android-chrome-512x512.png",
+      "src": "/icon-512x512.png",
       "sizes": "512x512",
       "type": "image/png",
       "purpose": "any"
     },
     {
-      "src": "/android-chrome-512x512.png",
+      "src": "/icon-maskable-512x512.png",
       "sizes": "512x512",
       "type": "image/png",
       "purpose": "maskable"
+    }
+  ],
+  "screenshots": [],
+  "shortcuts": [
+    {
+      "name": "Latest Music",
+      "short_name": "Music",
+      "description": "Stream LILVIN999's latest tracks",
+      "url": "/#music"
+    },
+    {
+      "name": "Tour Dates",
+      "short_name": "Shows",
+      "description": "See upcoming LILVIN999 tour dates and tickets",
+      "url": "/#shows"
+    },
+    {
+      "name": "Booking & Press",
+      "short_name": "Contact",
+      "description": "Contact LILVIN999 for bookings and press",
+      "url": "/#contact"
     }
   ]
 }

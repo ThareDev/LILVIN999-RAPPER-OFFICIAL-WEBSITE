@@ -1,9 +1,9 @@
 "use client";
 import { useState, useRef } from "react";
 import Image from "next/image";
-import album1 from "@/public/hhh.jpg";
-import album2 from "@/public/jjjj.jpg";
-import album3 from "@/public/kkk.jpg";
+import album1 from "@/public/np5.jpeg";
+import album2 from "@/public/np2.jpeg";
+import album3 from "@/public/np4.jpeg";
 
 interface Track {
   num: string;

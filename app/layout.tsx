@@ -14,10 +14,10 @@ const geistMono = Geist_Mono({
   subsets: ["latin"],
 });
 
-const BASE_URL = "https://lilvin999.com"; // 🔁 Replace with your actual domain
+const BASE_URL = "https://lilvin999.com";
 
 export const viewport: Viewport = {
-  themeColor: "#2E4A3D",
+  themeColor: "#080F14",
   width: "device-width",
   initialScale: 1,
 };
@@ -26,11 +26,11 @@ export const metadata: Metadata = {
   metadataBase: new URL(BASE_URL),
 
   title: {
-    default: "LILVIN999 — Sri Lanka's Hardest Rapper | Official Site",
+    default: "LILVIN999 — Sri Lanka's Hardest Rapper from Piliyandala | Official Site",
     template: "%s | LILVIN999",
   },
   description:
-    "Official website of LILVIN999 — Sri Lanka's loyalty-driven street rapper. Trap, melodic rap, and drill-influenced street rap fused with raw storytelling. Stream new music, book shows, and follow the journey.",
+    "Official website of LILVIN999 — Sri Lanka's loyalty-driven street rapper, born and raised in Piliyandala, the heart of Sri Lankan rap. Trap, melodic rap, and drill-influenced street rap fused with raw storytelling. Stream new music, book shows, and follow the journey.",
 
   keywords: [
     // ── Artist identity
@@ -43,15 +43,44 @@ export const metadata: Metadata = {
     "LILVIN999 new song",
     "LILVIN999 album",
     "LILVIN 999 rapper",
+    "LILVIN999 Piliyandala",
+    "LILVIN999 biography",
+    "LILVIN999 interview",
+    "LILVIN999 lyrics",
+    "who is LILVIN999",
 
-    // ── Song titles
-    "Block Money",
-    "No Trust St",
-    "Hustle Hard Ave",
-    "999 Anthem",
-    "Receipts LILVIN999",
-    "Loyalty Hook",
-    "Fear None LILVIN999",
+    // ── Origin / location signals
+    "Piliyandala rapper",
+    "Piliyandala hip hop",
+    "Piliyandala music artist",
+    "rapper from Piliyandala",
+    "Sri Lanka rap capital",
+    "heart of Sri Lankan rap",
+    "Colombo district rapper",
+    "Western Province rapper Sri Lanka",
+    "Sri Lanka music artist",
+    "Sri Lankan music 2026",
+    "Sri Lanka underground music scene",
+
+    // ── Song titles (actual tracks)
+    "CLOSE Lilvin999",
+    "CLOSE Lilvin999 Clessoff Remix",
+    "PORO PAARA Lilvin999",
+    "ALUGOZU Lilvin999",
+    "ALUGOZU Zana Beatz",
+    "LEAN Lilvin999",
+    "MONARU Lilvin999",
+    "Loyalty Over Everything album",
+    "No Trust St album",
+    "Raw Debut album Lilvin999",
+    "Lilvin999 discography",
+    "Lilvin999 latest tracks",
+
+    // ── Collaborators / features
+    "Clessoff rapper",
+    "Zana Beatz producer",
+    "Sri Lanka rap collaborations",
+    "Sri Lanka rap producers",
 
     // ── Genre / sound
     "Sri Lanka hip hop",
@@ -64,12 +93,11 @@ export const metadata: Metadata = {
     "drill Sri Lanka",
     "underground rap Sri Lanka",
     "new wave rap Sri Lanka",
+    "melodic trap Sri Lanka",
     "South Asian rap",
     "Asian hip hop artist",
-
-    // ── Location signals
-    "Sri Lanka music artist",
-    "Sri Lankan music 2026",
+    "Sinhala trap music",
+    "Sri Lanka gangsta rap",
 
     // ── Intent / action keywords
     "book Sri Lankan rapper",
@@ -79,6 +107,17 @@ export const metadata: Metadata = {
     "Sri Lanka live rap performance",
     "rap collaboration Sri Lanka",
     "rap press inquiry Sri Lanka",
+    "Sri Lanka rapper contact",
+    "Sri Lanka rapper management",
+
+    // ── Live shows / tour
+    "LILVIN999 tour dates",
+    "LILVIN999 concert",
+    "LILVIN999 tickets",
+    "Beheth concert Colombo",
+    "Port City Colombo concert",
+    "Sri Lanka rap concert 2026",
+    "Sri Lanka hip hop live show",
 
     // ── Discovery / streaming
     "LILVIN999 Spotify",
@@ -92,6 +131,8 @@ export const metadata: Metadata = {
     "rising rapper Sri Lanka",
     "Sri Lanka rap 2026",
     "Sinhala music 2026",
+    "trust nobody fear none",
+    "loyalty over everything rap",
   ],
 
   authors: [{ name: "LILVIN999", url: BASE_URL }],
@@ -105,9 +146,9 @@ export const metadata: Metadata = {
     locale: "en_US",
     url: BASE_URL,
     siteName: "LILVIN999 Official",
-    title: "LILVIN999 — Sri Lanka's Hardest Rapper",
+    title: "LILVIN999 — Born to music, raised in the streets of Piliyandala.",
     description:
-      "Trust nobody, fear none. Trap, melodic rap, and street rap from Sri Lanka. Stream music, book shows, and follow the journey of LILVIN999.",
+      "Trust nobody, fear none. Trap, melodic rap, and street rap from Piliyandala — the heart of Sri Lankan rap. Stream music, book shows, and follow the journey of LILVIN999.",
     images: [
       {
         url: "/og-image.jpg",
@@ -120,9 +161,9 @@ export const metadata: Metadata = {
 
   twitter: {
     card: "summary_large_image",
-    title: "LILVIN999 — Sri Lanka's Hardest Rapper",
+    title: "LILVIN999 — Born to music, raised in the streets.",
     description:
-      "Official site of LILVIN999. Trap, melodic rap & street rap from Sri Lanka. Loyalty over everything.",
+      "Official site of LILVIN999. Trap, melodic rap & street rap from Piliyandala, Sri Lanka. Loyalty over everything.",
     images: ["/og-image.jpg"],
     creator: "@lilvin999",
   },
