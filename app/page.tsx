@@ -6,12 +6,12 @@ import Shows from "./components/Shows";
 import About from "./components/About";
 import Blog from "./components/Blog";
 import Footer from "./components/Footer";
-import Eventpopup from "./components/popups/Eventbannerpopup";
+// import Eventpopup from "./components/popups/Eventbannerpopup";
 
 export default function Home() {
   return (
     <main className="relative">
-      <Eventpopup />
+      {/* <Eventpopup /> */}
       <Navbar />
       <Hero />
       <Ticker />
