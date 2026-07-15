@@ -1,3 +1,11 @@
+const video1 = "/videos/video1.mp4";
+const video2 = "/videos/video2.mp4";
+const video3 = "/videos/video3.mp4";
+
+
+
+
+
 const posts = [
   {
     category: "Behind the Scenes",
@@ -5,6 +13,7 @@ const posts = [
     excerpt: "36 hours straight in the booth. Here's what really went down when we recorded the title track.",
     date: "Apr 2, 2026",
     readTime: "5 min read",
+    video: video3,
   },
   {
     category: "Tour Diary",
@@ -12,6 +21,7 @@ const posts = [
     excerpt: "Thousands deep, one mic, zero rehearsal. The Galle show went harder than anything I've done.",
     date: "Mar 28, 2026",
     readTime: "4 min read",
+    video: video2,
   },
   {
     category: "Industry Talk",
@@ -19,6 +29,7 @@ const posts = [
     excerpt: "They came with numbers I'd never seen. I walked away anyway. Here's the honest reason why.",
     date: "Mar 15, 2026",
     readTime: "7 min read",
+    video: video1,
   },
 ];
 
@@ -123,6 +134,16 @@ export default function Blog() {
           background: linear-gradient(to bottom, transparent, #00A3FF, transparent);
           opacity: 0.4;
         }
+
+        /* background video inside each box */
+        .blog-video {
+          position: absolute;
+          inset: 0;
+          width: 100%;
+          height: 100%;
+          object-fit: cover;
+          z-index: 0;
+        }
       `}</style>
 
       <div className="relative max-w-7xl mx-auto px-5 sm:px-8 lg:px-12">
@@ -166,7 +187,17 @@ export default function Blog() {
           {/* featured (large) */}
           <div className="lg:col-span-2 blog-card blog-card-featured group cursor-pointer">
             <div className="relative aspect-video overflow-hidden">
-              {/* gradient fill — no image here, stylized placeholder */}
+              {/* mp4 video background */}
+              <video
+                className="blog-video"
+                src={posts[0].video}
+                autoPlay
+                muted
+                loop
+                playsInline
+              />
+
+              {/* gradient fill — sits above video, keeps look identical */}
               <div
                 className="absolute inset-0"
                 style={{
@@ -215,6 +246,16 @@ export default function Blog() {
             {posts.slice(1).map((post) => (
               <div key={post.title} className="blog-card blog-card-side group cursor-pointer flex-1">
                 <div className="relative h-full min-h-[180px] overflow-hidden">
+                  {/* mp4 video background */}
+                  <video
+                    className="blog-video"
+                    src={post.video}
+                    autoPlay
+                    muted
+                    loop
+                    playsInline
+                  />
+
                   <div
                     className="absolute inset-0"
                     style={{
