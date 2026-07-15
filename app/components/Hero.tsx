@@ -1,7 +1,7 @@
 "use client";
 
 import Image from "next/image";
-import artist from "@/public/lilvin.jpg";
+import artist from "@/public/np1.jpeg";
 import { useEffect, useRef, useState, JSX } from "react";
 import { motion, useScroll, useTransform, Variants } from "framer-motion";
 
@@ -70,9 +70,9 @@ function Counter({ target, suffix = "" }: { target: number; suffix?: string }): 
 }
 
 const STATS = [
-  { target: 999, suffix: "K", label: "Followers" },
-  { target: 14, suffix: "", label: "Mixtapes" },
-  { target: 6, suffix: "", label: "Sold Out Shows" },
+  { target: 6, suffix: "K+", label: "Followers" },
+  { target: 1, suffix: "", label: "Albums" },
+  { target: 0, suffix: "", label: "EB" },
 ];
 
 const MARQUEE_TEXT =

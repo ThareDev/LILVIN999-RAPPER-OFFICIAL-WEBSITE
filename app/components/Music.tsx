@@ -2,7 +2,7 @@
 import { useState, useRef } from "react";
 import Image from "next/image";
 import album1 from "@/public/np5.jpeg";
-import album2 from "@/public/np2.jpeg";
+import album2 from "@/public/np3.jpeg";
 import album3 from "@/public/np4.jpeg";
 
 interface Track {
@@ -16,11 +16,11 @@ interface Track {
 }
 
 const initialTracks: Track[] = [
-  { num: "01", title: "CLOSE", feat: "ft Clessoff (Remix)", album: "LILVIN999", duration: "3:30", hot: true, youtube: "https://youtu.be/sv6oICe5qoo?si=ajsu_qGE7pqNldaB" },
-  { num: "02", title: "PORO PAARA", feat: "", album: "LILVIN999", duration: "3:30", hot: false, youtube: "https://youtu.be/-XLSkpaaEOU?si=TIzmwtkJQYm2yITl" },
-  { num: "03", title: "ALUGOZU", feat: "ft Zana Beatz", album: "LILVIN999", duration: "3:30", hot: false, youtube: "https://youtu.be/JXbJFBZYP-E?si=LYiLPR3qPkJKa4um" },
-  { num: "04", title: "LEAN", feat: "", album: "LILVIN999", duration: "3:30", hot: false, youtube: "https://youtu.be/qSSz4Ssvraw?si=ahLKQpCXmDIopoFL" },
-  { num: "05", title: "MONARU", feat: "", album: "LILVIN999", duration: "3:30", hot: false, youtube: "https://youtu.be/qsyrs73aLdY?si=1YSuM5e-WmoURQ-Q" },
+  { num: "01", title: "CLOSE", feat: "ft Clessoff (Remix)", album: "LILVIN999", duration: "2:54", hot: true, youtube: "https://youtu.be/sv6oICe5qoo?si=ajsu_qGE7pqNldaB" },
+  { num: "02", title: "PORO PAARA", feat: "", album: "LILVIN999", duration: "3:52", hot: false, youtube: "https://youtu.be/-XLSkpaaEOU?si=TIzmwtkJQYm2yITl" },
+  { num: "03", title: "ALUGOZU", feat: "ft Zana Beatz", album: "LILVIN999", duration: "3:36", hot: false, youtube: "https://youtu.be/JXbJFBZYP-E?si=LYiLPR3qPkJKa4um" },
+  { num: "04", title: "LEAN", feat: "", album: "LILVIN999", duration: "2:35", hot: false, youtube: "https://youtu.be/qSSz4Ssvraw?si=ahLKQpCXmDIopoFL" },
+  { num: "05", title: "MONARU", feat: "", album: "LILVIN999", duration: "3:08", hot: false, youtube: "https://youtu.be/qsyrs73aLdY?si=1YSuM5e-WmoURQ-Q" },
 ];
 
 function getYouTubeID(url: string): string | null {
@@ -78,7 +78,6 @@ export default function Music() {
   const [progress, setProgress] = useState(0);
   const [currentTime, setCurrentTime] = useState("0:00");
   const [totalTime, setTotalTime] = useState("0:00");
-  const [volume, setVolume] = useState(80);
 
   const playerRef = useRef<YTPlayer | null>(null);
   const progressInterval = useRef<ReturnType<typeof setInterval> | undefined>(undefined);
@@ -336,20 +335,6 @@ export default function Music() {
         .ctrl-play:hover { background: #fff; box-shadow: 0 0 32px rgba(57,255,20,0.3); transform: scale(1.05); }
         .ctrl-play:active { transform: scale(0.97); }
 
-        /* volume */
-        .player-volume { display: flex; align-items: center; gap-10px; gap: 10px; }
-        .vol-icon { font-size: 14px; color: rgba(255,255,255,0.3); }
-        .vol-slider {
-          flex: 1; appearance: none; height: 3px;
-          background: rgba(255,255,255,0.1); border-radius: 99px; outline: none; cursor: pointer;
-        }
-        .vol-slider::-webkit-slider-thumb {
-          appearance: none; width: 12px; height: 12px;
-          border-radius: 50%; background: #39FF14;
-          box-shadow: 0 0 6px rgba(57,255,20,0.5);
-          cursor: pointer;
-        }
-
         /* track list in player */
         .player-tracklist { margin-top: 20px; border-top: 1px solid rgba(255,255,255,0.05); }
         .player-track-item {
@@ -438,13 +423,6 @@ export default function Music() {
               <button className="ctrl-btn" onClick={() => skipTrack(1)} title="Next">⏭</button>
             </div>
 
-            {/* volume */}
-            <div className="player-volume">
-              <span className="vol-icon">🔈</span>
-              <input type="range" min={0} max={100} value={volume} className="vol-slider"
-                onChange={(e) => setVolume(Number(e.target.value))} />
-              <span className="vol-icon">🔊</span>
-            </div>
 
             {/* mini tracklist */}
             <div className="player-tracklist">

@@ -8,24 +8,19 @@ const video3 = "/videos/video3.mp4";
 
 const posts = [
   {
-    category: "Behind the Scenes",
-    title: "Inside the '999 Sessions' All-Nighter",
-    excerpt: "36 hours straight in the booth. Here's what really went down when we recorded the title track.",
-    date: "Apr 2, 2026",
-    readTime: "5 min read",
+
+    title: "Born to Music | Trap & Sri Lankan Rage Artist Official Site Launch ",
     video: video3,
   },
   {
     category: "Tour Diary",
-    title: "Galle Was Wild — A Night I Won't Forget",
-    excerpt: "Thousands deep, one mic, zero rehearsal. The Galle show went harder than anything I've done.",
-    date: "Mar 28, 2026",
-    readTime: "4 min read",
+    title: "AGT CONCERT 2026 — Anuradhapura Was Wild",
+    date: " Jul 05, 2026",
     video: video2,
   },
   {
     category: "Industry Talk",
-    title: "Why I Turned Down the Major Label Deal",
+    title: "Galle Was Wild — A Night I Won't Forget",
     excerpt: "They came with numbers I'd never seen. I walked away anyway. Here's the honest reason why.",
     date: "Mar 15, 2026",
     readTime: "7 min read",

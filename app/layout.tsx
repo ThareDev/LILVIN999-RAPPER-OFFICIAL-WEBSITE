@@ -26,11 +26,11 @@ export const metadata: Metadata = {
   metadataBase: new URL(BASE_URL),
 
   title: {
-    default: "LILVIN999 — Sri Lanka's Hardest Rapper from Piliyandala | Official Site",
+    default: "LILVIN999 — Born to Music | Trap & Sri Lankan Rap Artist Official Site",
     template: "%s | LILVIN999",
   },
   description:
-    "Official website of LILVIN999 — Sri Lanka's loyalty-driven street rapper, born and raised in Piliyandala, the heart of Sri Lankan rap. Trap, melodic rap, and drill-influenced street rap fused with raw storytelling. Stream new music, book shows, and follow the journey.",
+    "Official website of LILVIN999 — born to music, representing Anuradhapura, the Kingdom of Rivers and King City of Sri Lanka. Trap, hip hop, and Sri Lankan rap flow fused with raw storytelling. Stream new music, book shows, and follow the journey.",
 
   keywords: [
     // ── Artist identity
@@ -43,21 +43,22 @@ export const metadata: Metadata = {
     "LILVIN999 new song",
     "LILVIN999 album",
     "LILVIN 999 rapper",
-    "LILVIN999 Piliyandala",
+    "LILVIN999 born to music",
+    "born to music LILVIN999",
     "LILVIN999 biography",
     "LILVIN999 interview",
     "LILVIN999 lyrics",
     "who is LILVIN999",
 
-    // ── Origin / location signals
-    "Piliyandala rapper",
-    "Piliyandala hip hop",
-    "Piliyandala music artist",
-    "rapper from Piliyandala",
+    // ── Origin / location signals — Anuradhapura / King City
+    "Anuradhapura rapper",
+    "Anuradhapura hip hop",
+    "Anuradhapura music artist",
+    "rapper from Anuradhapura",
+    "Kingdom of Rivers rapper",
+    "King City rapper Sri Lanka",
+    "Anuradhapura ancient city rapper",
     "Sri Lanka rap capital",
-    "heart of Sri Lankan rap",
-    "Colombo district rapper",
-    "Western Province rapper Sri Lanka",
     "Sri Lanka music artist",
     "Sri Lankan music 2026",
     "Sri Lanka underground music scene",
@@ -82,22 +83,26 @@ export const metadata: Metadata = {
     "Sri Lanka rap collaborations",
     "Sri Lanka rap producers",
 
-    // ── Genre / sound
+    // ── Genre / sound — trap, hip hop, rap flow focus
+    "Sri Lanka trap music",
+    "trap music Sri Lanka",
     "Sri Lanka hip hop",
+    "Sri Lankan hip hop artist",
     "Sri Lankan rapper",
     "Sri Lanka rap music",
+    "Sri Lankan rap flow",
+    "rap flow killer Sri Lanka",
     "Sinhala rap",
     "Sinhala hip hop",
-    "trap music Sri Lanka",
+    "Sinhala trap music",
     "street rap Sri Lanka",
     "drill Sri Lanka",
     "underground rap Sri Lanka",
     "new wave rap Sri Lanka",
     "melodic trap Sri Lanka",
     "South Asian rap",
+    "South Asian trap music",
     "Asian hip hop artist",
-    "Sinhala trap music",
-    "Sri Lanka gangsta rap",
 
     // ── Intent / action keywords
     "book Sri Lankan rapper",
@@ -124,6 +129,7 @@ export const metadata: Metadata = {
     "LILVIN999 YouTube",
     "LILVIN999 TikTok",
     "LILVIN999 Instagram",
+    "stream Sri Lanka trap music",
     "stream Sri Lanka rap",
     "new Sri Lankan music",
     "best Sri Lankan rapper",
@@ -146,9 +152,9 @@ export const metadata: Metadata = {
     locale: "en_US",
     url: BASE_URL,
     siteName: "LILVIN999 Official",
-    title: "LILVIN999 — Born to music, raised in the streets of Piliyandala.",
+    title: "LILVIN999 — Born to Music. Representing the Kingdom of Rivers.",
     description:
-      "Trust nobody, fear none. Trap, melodic rap, and street rap from Piliyandala — the heart of Sri Lankan rap. Stream music, book shows, and follow the journey of LILVIN999.",
+      "Trust nobody, fear none. Trap, hip hop, and Sri Lankan rap flow from Anuradhapura — the Kingdom of Rivers and King City of Sri Lanka. Stream music, book shows, and follow the journey of LILVIN999.",
     images: [
       {
         url: "/og-image.jpg",
@@ -161,9 +167,9 @@ export const metadata: Metadata = {
 
   twitter: {
     card: "summary_large_image",
-    title: "LILVIN999 — Born to music, raised in the streets.",
+    title: "LILVIN999 — Born to Music.",
     description:
-      "Official site of LILVIN999. Trap, melodic rap & street rap from Piliyandala, Sri Lanka. Loyalty over everything.",
+      "Official site of LILVIN999. Trap, hip hop & Sri Lankan rap flow, representing Anuradhapura, the King City of Sri Lanka. Loyalty over everything.",
     images: ["/og-image.jpg"],
     creator: "@lilvin999",
   },
